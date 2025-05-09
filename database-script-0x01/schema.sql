@@ -2,7 +2,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Create User table
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE users (
 );
 
 -- Create Property table
-CREATE TABLE properties (
+CREATE TABLE IF NOT EXISTS properties (
     property_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     host_id UUID NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -27,10 +27,10 @@ CREATE TABLE properties (
 );
 
 -- Create index on property_id (Generally indexed automatically by primary key)
-CREATE INDEX idx_properties_host_id ON properties(host_id);
+CREATE INDEX IF NOT EXISTS idx_properties_host_id ON properties(host_id);
 
 -- Create Booking table
-CREATE TABLE bookings (
+CREATE TABLE IF NOT EXISTS bookings (
     booking_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     property_id UUID NOT NULL,
     user_id UUID NOT NULL,
@@ -45,11 +45,11 @@ CREATE TABLE bookings (
 );
 
 -- Create indexes on foreign keys
-CREATE INDEX idx_bookings_property_id ON bookings(property_id);
-CREATE INDEX idx_bookings_user_id ON bookings(user_id);
+CREATE INDEX IF NOT EXISTS idx_bookings_property_id ON bookings(property_id);
+CREATE INDEX IF NOT EXISTS idx_bookings_user_id ON bookings(user_id);
 
 -- Create Payment table
-CREATE TABLE payments (
+CREATE TABLE IF NOT EXISTS payments (
     payment_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     booking_id UUID NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
@@ -59,26 +59,26 @@ CREATE TABLE payments (
 );
 
 -- Create index on booking_id
-CREATE INDEX idx_payments_booking_id ON payments(booking_id);
+CREATE INDEX IF NOT EXISTS idx_payments_booking_id ON payments(booking_id);
 
 -- Create Review table
-CREATE TABLE reviews (
+CREATE TABLE IF NOT EXISTS reviews (
     review_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     property_id UUID NOT NULL,
     user_id UUID NOT NULL,
     rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
     comment TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (property_id) REFERENCES properties(property_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 -- Create indexes on foreign keys
-CREATE INDEX idx_reviews_property_id ON reviews(property_id);
-CREATE INDEX idx_reviews_user_id ON reviews(user_id);
+CREATE INDEX IF NOT EXISTS idx_reviews_property_id ON reviews(property_id);
+CREATE INDEX IF NOT EXISTS idx_reviews_user_id ON reviews(user_id);
 
 -- Create Message table
-CREATE TABLE messages (
+CREATE TABLE IF NOT EXISTS messages (
     message_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     sender_id UUID NOT NULL,
     recipient_id UUID NOT NULL,
@@ -89,5 +89,5 @@ CREATE TABLE messages (
 );
 
 -- Create indexes on sender and recipient IDs
-CREATE INDEX idx_messages_sender_id ON messages(sender_id);
-CREATE INDEX idx_messages_recipient_id ON messages(recipient_id);
+CREATE INDEX IF NOT EXISTS idx_messages_sender_id ON messages(sender_id);
+CREATE INDEX IF NOT EXISTS idx_messages_recipient_id ON messages(recipient_id);
