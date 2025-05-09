@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     phone_number VARCHAR(20),
     profile_image VARCHAR(255),
     is_verified BOOLEAN DEFAULT FALSE,
-    verified_at TIMESTAMP,
+    verified_at TIMESTAMP DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
