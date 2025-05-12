@@ -152,73 +152,22 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- test the data inserted
--- select all user
-SELECT * FROM users;
--- select all roles
-SELECT
-    u.id AS user_id,
-    u.first_name,
-    u.last_name,
-    u.email,
-    r.role_name
-FROM
-    users u
-JOIN
-    user_roles ur ON u.id = ur.user_id
-JOIN
-    roles r ON ur.role_id = r.id;
+-- test the count of data inserted into the tables
+DO $$
+DECLARE
+    count INT;
+BEGIN
+    SELECT COUNT(*) INTO count FROM users;
+    RAISE NOTICE 'Total users: %', count;
 
--- select user with their addresses`
-SELECT u.email, ua.street, ua.city, ua.state, ua.postal_code, ua.country
-FROM users u
-JOIN user_addresses ua ON u.id = ua.user_id;
+    SELECT COUNT(*) INTO count FROM properties;
+    RAISE NOTICE 'Total properties: %', count;
 
--- select all messages with their sender and receiver
-SELECT m.*, u1.first_name AS sender_first_name, u2.first_name AS receiver_first_name
-FROM messages m
-JOIN users u1 ON m.sender_id = u1.id
-JOIN users u2 ON m.receiver_id = u2.id;
+    SELECT COUNT(*) INTO count FROM bookings;
+    RAISE NOTICE 'Total bookings: %', count;
 
--- select all payment methods with their users
-SELECT pm.*, u.first_name, u.last_name
-FROM payment_methods pm
-JOIN users u ON pm.user_id = u.id;
+    SELECT COUNT(*) INTO count FROM payments;
+    RAISE NOTICE 'Total payments: %', count;
 
--- select all properties
-SELECT * FROM properties;
-
--- select all property photos with their properties
-SELECT pp.*, p.name AS property_name
-FROM property_photos pp
-JOIN properties p ON pp.property_id = p.id;
-
--- select all property calendars with their properties
-SELECT pc.*, p.name AS property_name
-FROM property_calendar pc
-JOIN properties p ON pc.property_id = p.id;
-
--- select all property rules with their properties
-SELECT pr.*, p.name AS property_name
-FROM property_rules pr
-JOIN properties p ON pr.property_id = p.id;
-
--- select all property amenities with their properties
-SELECT pa.*, p.name AS property_name, a.name AS amenity_name
-FROM property_amenities pa
-JOIN properties p ON pa.property_id = p.id
-JOIN amenities a ON pa.amenity_id = a.id;
-
--- select all property addresses with their properties
-SELECT pa.*, p.name AS property_name
-FROM property_addresses pa
-JOIN properties p ON pa.property_id = p.id;
-
--- select all bookings with payments and their status
-SELECT b.*, p.*
-FROM bookings b
-JOIN payments p ON b.id = p.booking_id;
-
--- select all reviews with their properties and users
-SELECT * FROM reviews;
-    
+END;
+$$ LANGUAGE plpgsql;
