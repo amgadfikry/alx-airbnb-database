@@ -12,7 +12,8 @@ ON b.user_id = u.id;
 SELECT p.id, p.name, r.rating, r.comment
 FROM properties p
 LEFT JOIN reviews r
-ON p.id = r.property_id;
+ON p.id = r.property_id
+ORDER BY p.id;
 
 -- query using a FULL OUTER JOIN to retrieve all users and all bookings, even if the user has no booking or a booking is not linked to a user.
 SELECT u.id, u.first_name, u.last_name, b.id, b.date_in, b.date_out, b.total_price
