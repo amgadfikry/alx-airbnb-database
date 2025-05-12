@@ -27,13 +27,13 @@
 3. Copy the SQL file to the container:
 
    ```bash
-   docker cp <path_to_your_sql_file> pst:my_schema.sql
+   docker cp <path_to_your_sql_file> pst:my_seed.sql
    ```
 
 4. Connect to the container and run the SQL file:
 
    ```bash
-   docker exec -i pst psql -U postgres -f ./my_schema.sql
+   docker exec -i pst psql -U postgres -f ./my_seed.sql
    ```
 
 5. close and delete the container
