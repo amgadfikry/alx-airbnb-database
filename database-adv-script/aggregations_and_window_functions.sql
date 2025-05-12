@@ -6,9 +6,11 @@ ON u.id = b.user_id
 GROUP BY u.id, u.first_name, u.last_name;
 
 -- a window function (ROW_NUMBER, RANK) to rank properties based on the total number of bookings they have received.
-SELECT p.id, p.name, COUNT(b.id) AS total_bookings, RANK() OVER (ORDER BY COUNT(b.id) DESC) AS rank
+SELECT p.id, p.name, COUNT(b.id) AS total_bookings,
+    RANK() OVER (ORDER BY COUNT(b.id) DESC) AS rank,
+    ROW_NUMBER() OVER (ORDER BY COUNT(b.id) DESC) AS row_num
 FROM properties p
 LEFT JOIN bookings b
 ON p.id = b.property_id
 GROUP BY p.id, p.name
-ORDER BY rank;
+ORDER BY row_num;
