@@ -165,6 +165,7 @@ CREATE TABLE IF NOT EXISTS property_calendar (
     date DATE NOT NULL,
     state VARCHAR(50) NOT NULL CHECK (state IN ('available', 'booked', 'blocked', 'pending')) DEFAULT 'available',
     price DECIMAL(10, 2) NOT NULL,
+    version INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (property_id) REFERENCES properties(id) ON DELETE CASCADE
