@@ -1,5 +1,8 @@
 -- SQL CREATE INDEX commands to create appropriate indexes
 
+-- check analysis of the database before creating indexes
+EXPLAIN ANALYZE property_calendar;
+
 -- create index IF NOT EXISTS of user_addresses user_id
 CREATE INDEX IF NOT EXISTS idx_user_addresses_user_id ON user_addresses(user_id);
 
@@ -40,3 +43,6 @@ CREATE INDEX IF NOT EXISTS idx_reviews_property_id ON reviews(property_id);
 -- create index IF NOT EXISTS of bookings property_id, user_id
 CREATE INDEX IF NOT EXISTS idx_bookings_property_id ON bookings(property_id);
 CREATE INDEX IF NOT EXISTS idx_bookings_user_id ON bookings(user_id);
+
+-- Check analysis of the database after creating indexes
+EXPLAIN ANALYZE property_calendar;
